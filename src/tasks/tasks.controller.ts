@@ -1,5 +1,5 @@
 import { TaskModel } from './tasks.model';
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 
@@ -21,5 +21,10 @@ export class TasksController {
   createTask(@Body() createTaskDTO: CreateTaskDto): TaskModel {
     // ambil body yang dikirim dari FE
     return this.tasksService.createTask(createTaskDTO);
+  }
+
+  @Delete('/:id')
+  destroyTaskByID(@Param('id') id: string): TaskModel {
+    return this.tasksService.destroyTask(id);
   }
 }

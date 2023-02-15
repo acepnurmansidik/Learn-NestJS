@@ -32,4 +32,10 @@ export class TasksService {
     // return nilai yang dikirim
     return task;
   }
+
+  destroyTask(id: string): TaskModel {
+    const newTask = this.tasks.find((itemTask) => itemTask.id == id);
+    this.tasks = this.tasks.filter((itemTask) => itemTask.id != id);
+    return newTask;
+  }
 }
