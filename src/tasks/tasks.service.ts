@@ -6,20 +6,13 @@ import { CreateTaskDto } from './dto/create-task.dto';
 @Injectable()
 export class TasksService {
   private tasks: TaskModel[] = [];
-  private taskResult: TaskModel;
 
   getAllTasks(): TaskModel[] {
     return this.tasks;
   }
 
   getDetailTask(id: string): TaskModel {
-    this.tasks.map((task) => {
-      if (task.id === id) {
-        this.taskResult = task;
-      }
-    });
-
-    return this.taskResult;
+    return this.tasks.find((rs) => rs.id === id);
   }
 
   createTask(createTaskDTO: CreateTaskDto): TaskModel {
