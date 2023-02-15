@@ -5,6 +5,7 @@ import {
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Patch,
   Post,
@@ -28,7 +29,14 @@ export class TasksController {
 
   @Get('/:id')
   getDetailTask(@Param('id') id: string) {
-    return this.tasksService.getDetailTask(id);
+    // jika id nya ada
+    const found = this.tasksService.getDetailTask(id);
+    // jika tidak ada kirim response 404
+    if (!found) {
+      throw new NotFoundException(`Task with "${id}" not found`);
+    }
+
+    return found;
   }
 
   @Post()
