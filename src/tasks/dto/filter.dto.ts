@@ -1,4 +1,4 @@
 export class TaskFilter {
-  search: string;
-  status: string;
+  search?: string;
+  status?: string;
 }

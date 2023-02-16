@@ -1,4 +1,3 @@
-import { TaskFilter } from './dto/filter.dto';
 import { TaskModel } from './tasks.model';
 import {
   Body,
@@ -14,15 +13,16 @@ import {
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
-  getAllTasks(@Query() filterQuery: TaskFilter): TaskModel[] {
-    if (Object.keys(filterQuery).length) {
-      return this.tasksService.getAllTaskWithFilter(filterQuery);
+  getAllTasks(@Query() getFilterDto: GetTaskFilterDto): TaskModel[] {
+    if (Object.keys(getFilterDto).length) {
+      return this.tasksService.getAllTaskWithFilter(getFilterDto);
     } else {
       return this.tasksService.getAllTasks();
     }
