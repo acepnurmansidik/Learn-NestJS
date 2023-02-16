@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -47,14 +48,20 @@ export class TasksController {
 
   @Delete('/:id')
   destroyTaskByID(@Param('id') id: string): TaskModel {
-    return this.tasksService.destroyTask(id);
+    const found = this.tasksService.destroyTask(id);
+    if (!found) {
+      throw new NotFoundException(`Task with "${id}" not found`);
+    }
+
+    return found;
   }
 
   @Patch('/:id')
   updateByID(
     @Param('id') id: string,
-    @Body() updateTask: CreateTaskDto,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
   ): TaskModel {
-    return this.tasksService.updateTask(id, updateTask);
+    const { status } = updateTaskStatusDto;
+    return this.tasksService.updateTask(id, status);
   }
 }

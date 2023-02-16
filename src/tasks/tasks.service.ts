@@ -62,11 +62,10 @@ export class TasksService {
     return newTask;
   }
 
-  updateTask(id: string, updateTask: CreateTaskDto): TaskModel {
+  updateTask(id: string, status: TaskStatus): TaskModel {
     // rest parameter
     const task = this.getDetailTask(id);
-    task.title = updateTask.title;
-    task.description = updateTask.description;
+    task.status = status;
 
     return task;
   }
