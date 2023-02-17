@@ -1,19 +1,6 @@
-import { TaskStatus } from './tasks-status.enum';
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  NotFoundException,
-  Param,
-  Patch,
-  Post,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
+import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto } from './dto/create-task.dto';
-import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
-import { GetTaskFilterDto } from './dto/get-task-filter.dto';
 @Controller('tasks')
 export class TasksController {
   constructor(private tasksService: TasksService) {}
@@ -26,6 +13,15 @@ export class TasksController {
   //     return this.tasksService.getAllTasks();
   //   }
   // }
+  // @Get('/:id')
+  // getAllTasks(@Param('id') id: string): void {
+  //   console.log('object', this.tasksService.getTaskById(id));
+  // }
+
+  @Get('/:id')
+  getTaskById(@Param('id') id: string): Promise<Task> {
+    return this.tasksService.getTaskById(id);
+  }
 
   // @Get('/:id')
   // getDetailTask(@Param('id') id: string) {
