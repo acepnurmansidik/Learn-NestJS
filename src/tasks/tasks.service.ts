@@ -14,9 +14,7 @@ export class TasksService {
   // }
   // getAllTaskWithFilter(filterQuery: TaskFilter): TaskModel[] {
   async getTaskById(id: string): Promise<Task> {
-    const found = await this.taskRepository.findOneBy({ id: id });
-    const result = await this.taskRepository.find();
-    console.log('result', result);
+    const found = await this.taskRepository.findOneBy({ id });
 
     if (!found) {
       throw new NotFoundException(`Task with ID "${id} not found"`);
