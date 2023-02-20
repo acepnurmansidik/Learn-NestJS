@@ -3,7 +3,6 @@ import { Task } from './task.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TasksRepository } from './tasks.repository';
-import { TaskStatus } from './tasks-status.enum';
 
 @Injectable()
 export class TasksService {
@@ -31,6 +30,15 @@ export class TasksService {
 
     return response;
   }
+  async destroyTask(id: string): Promise<void> {
+    const result = await this.taskRepository.delete({ id });
+
+    // cek jika id yang di cari tidak ada
+    if (result.affected === 0) {
+      throw new NotFoundException(`Task with ID "${id}" not found!`);
+    }
+  }
+
   //   // destructure
   //   const { search, status } = filterQuery;
   //   let newTask = this.getAllTasks();
@@ -50,26 +58,7 @@ export class TasksService {
   // getDetailTask(id: string): TaskModel {
   //   return this.tasks.find((rs) => rs.id === id);
   // }
-  // createTask(createTaskDTO: CreateTaskDto): TaskModel {
-  //   // spred parameter
-  //   const { title, description } = createTaskDTO;
-  //   // simpan form json e dalam objek
-  //   const task: TaskModel = {
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     status: TaskStatus.DONE,
-  //   };
-  //   // push datanya ke array
-  //   this.tasks.push(task);
-  //   // return nilai yang dikirim
-  //   return task;
-  // }
-  // destroyTask(id: string): TaskModel {
-  //   const newTask = this.tasks.find((itemTask) => itemTask.id == id);
-  //   this.tasks = this.tasks.filter((itemTask) => itemTask.id != id);
-  //   return newTask;
-  // }
+
   // updateTask(id: string, status: TaskStatus): TaskModel {
   //   // rest parameter
   //   const task = this.getDetailTask(id);
