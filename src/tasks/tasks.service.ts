@@ -1,3 +1,4 @@
+import { TaskStatus } from './tasks-status.enum';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './task.entity';
 import { Injectable, NotFoundException } from '@nestjs/common';
@@ -10,10 +11,7 @@ export class TasksService {
     @InjectRepository(TasksRepository)
     private taskRepository: TasksRepository,
   ) {}
-  // getAllTasks(): TaskModel[] {
-  //   return this.tasks;
-  // }
-  // getAllTaskWithFilter(filterQuery: TaskFilter): TaskModel[] {
+
   async getTaskById(id: string): Promise<Task> {
     const found = await this.taskRepository.findOneBy({ id });
 
@@ -39,30 +37,13 @@ export class TasksService {
     }
   }
 
-  //   // destructure
-  //   const { search, status } = filterQuery;
-  //   let newTask = this.getAllTasks();
-  //   if (status) {
-  //     newTask = newTask.filter((task) => task.status !== status);
-  //   }
-  //   if (search) {
-  //     newTask = newTask.filter((task) => {
-  //       if (task.title.includes(search) || task.description.includes(search)) {
-  //         return true;
-  //       }
-  //       return false;
-  //     });
-  //   }
-  //   return newTask;
-  // }
-  // getDetailTask(id: string): TaskModel {
-  //   return this.tasks.find((rs) => rs.id === id);
-  // }
-
-  // updateTask(id: string, status: TaskStatus): TaskModel {
-  //   // rest parameter
-  //   const task = this.getDetailTask(id);
-  //   task.status = status;
-  //   return task;
-  // }
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    // rest parameter
+    const task = await this.getTaskById(id);
+    // mapping datanya yang akan di update
+    task.status = status;
+    // update
+    await this.taskRepository.save(task);
+    return task;
+  }
 }
