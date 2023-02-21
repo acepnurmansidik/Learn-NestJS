@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { User } from './user.entity';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersRepository extends Repository<User> {
@@ -17,7 +18,12 @@ export class UsersRepository extends Repository<User> {
     // desctructure
     const { username, password } = authCredentialsDto;
 
-    const user = this.create({ username, password });
+    // gen salt
+    const salt = await bcrypt.genSalt();
+    // hashing password
+    const hassPassword = await bcrypt.hash(password, salt);
+
+    const user = this.create({ username, password: hassPassword });
 
     // simpan ke database
     // jika user tersebut belum mendaftar maka simpan datanya ke db, jika sudah kirim pesan error
